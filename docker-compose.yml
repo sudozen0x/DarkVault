@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://bankctf:bankctf@db:5432/bankctf
+      - REDIS_URL=redis://redis:6379/0
+      - INTERNAL_SERVICE_URL=http://internal-service:9000
+    depends_on:
+      - db
+      - redis
+      - internal-service
+    networks:
+      - frontnet
+      - backnet
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=bankctf
+      - POSTGRES_PASSWORD=bankctf
+      - POSTGRES_DB=bankctf
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - backnet
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - backnet
+
+  # Not published to the host — reachable only from inside backnet.
+  # This is the target for SSRF chain challenges: the player has to
+  # find a feature (e.g. "fetch statement PDF from URL") that makes
+  # a server-side request, then pivot to this service to prove impact.
+  internal-service:
+    build: ./internal_service
+    networks:
+      - backnet
+    # deliberately no "networks: frontnet" and no ports: -> unreachable
+    # directly from the player's host, only via SSRF in the app.
+
+networks:
+  frontnet:
+  backnet:
+    internal: true   # no route to host/internet — realistic "internal segment"
+
+volumes:
+  dbdata:
