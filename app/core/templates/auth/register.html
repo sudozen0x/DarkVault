@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><title>DarkVault - Register</title></head>
+<body>
+  <h1>Open an Account</h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}<ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% endwith %}
+  <form method="post" action="{{ url_for('auth.register') }}">
+    <input name="username" placeholder="Username" required>
+    <input name="email" type="email" placeholder="Email" required>
+    <input name="password" type="password" placeholder="Password" required minlength="8">
+    <button type="submit">Register</button>
+  </form>
+</body></html>

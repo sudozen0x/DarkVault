@@ -42,6 +42,10 @@ main ── merge ← release/1.0 ← develop ← module/idor_beneficiary
 docker compose up --build
 ```
 
+```bash
+docker compose exec app python -m scripts.init_db
+```
+
 App on :8080, internal-service unreachable from host by design.
 
 ## Adding a module

@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><title>DarkVault - Login</title></head>
+<body>
+  <h1>DarkVault Bank</h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}<ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% endwith %}
+  <form method="post" action="{{ url_for('auth.login') }}">
+    <input name="username" placeholder="Username" required>
+    <input name="password" type="password" placeholder="Password" required>
+    <button type="submit">Log in</button>
+  </form>
+  <a href="{{ url_for('auth.register') }}">Register</a>
+</body></html>
