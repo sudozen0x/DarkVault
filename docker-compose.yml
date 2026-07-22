@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATABASE_URL=postgresql://bankctf:bankctf@db:5432/bankctf
+      - DATABASE_URL=postgresql://darkvault:darkvault@db:5432/darkvault
       - REDIS_URL=redis://redis:6379/0
       - INTERNAL_SERVICE_URL=http://internal-service:9000
     depends_on:
@@ -20,9 +20,9 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=bankctf
-      - POSTGRES_PASSWORD=bankctf
-      - POSTGRES_DB=bankctf
+      - POSTGRES_USER=darkvault
+      - POSTGRES_PASSWORD=darkvault
+      - POSTGRES_DB=darkvault
     volumes:
       - dbdata:/var/lib/postgresql/data
     networks:

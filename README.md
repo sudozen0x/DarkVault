@@ -1,4 +1,4 @@
-# BankCTF — Realistic Fintech VAPT Training Platform
+# DarkVault — Realistic Fintech VAPT Training Platform
 
 Single Flask application simulating a digital banking platform.
 Vulnerabilities are embedded in real business workflows (beneficiaries,

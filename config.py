@@ -4,7 +4,7 @@ import os
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-change-me")
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", "postgresql://bankctf:bankctf@db:5432/bankctf"
+        "DATABASE_URL", "postgresql://darkvault:darkvault@db:5432/darkvault"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_TYPE = "redis"
