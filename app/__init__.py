@@ -15,7 +15,6 @@ from pathlib import Path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
-
 db = SQLAlchemy()
 sess = Session()
 
@@ -35,6 +34,14 @@ def create_app(config_object="config.Config"):
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+
+    # Landing page: real bank sites redirect an unauthenticated root
+    # hit straight to login rather than serving a marketing page here.
+    from flask import redirect, url_for
+
+    @app.route("/")
+    def index():
+        return redirect(url_for("auth.login"))
 
     # --- dynamic module discovery ---
     _load_vuln_modules(app)
