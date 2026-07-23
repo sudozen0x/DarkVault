@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><title>DarkVault - Support</title></head>
+<body>
+  <h1>Support Tickets</h1>
+  <form method="post" action="{{ url_for('stored_xss_support_ticket.support_tickets') }}">
+    <input name="subject" placeholder="Subject" required><br>
+    <textarea name="message" placeholder="Describe your issue" required></textarea><br>
+    <button type="submit">Submit ticket</button>
+  </form>
+  <h2>Your tickets</h2>
+  <ul>
+    {% for t in tickets %}
+      <li><strong>{{ t.subject }}</strong>: {{ t.message }}</li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('dashboard.index') }}">Back to dashboard</a>
+</body></html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html><head><title>DarkVault Admin - Support Queue</title></head>
+<body>
+  <h1>Support Queue (Admin)</h1>
+  <table border="1">
+    <tr><th>ID</th><th>Customer</th><th>Subject</th><th>Message</th></tr>
+    {% for t in tickets %}
+      <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.customer_id }}</td>
+        <td>{{ t.subject }}</td>
+        <td>{{ t.message | safe }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</body></html>
