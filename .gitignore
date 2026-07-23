@@ -4,3 +4,6 @@ __pycache__/
 instance/
 *.db
 .venv/
+public_key.pem
+
+public_key.pem
