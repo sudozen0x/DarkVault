@@ -1,4 +1,4 @@
-# BankCTF — Realistic Fintech VAPT Training Platform
+# DarkVault — Realistic Fintech VAPT Training Platform
 
 Single Flask application simulating a digital banking platform.
 Vulnerabilities are embedded in real business workflows (beneficiaries,
@@ -40,6 +40,10 @@ main ── merge ← release/1.0 ← develop ← module/idor_beneficiary
 
 ```bash
 docker compose up --build
+```
+
+```bash
+docker compose exec app python -m scripts.init_db
 ```
 
 App on :8080, internal-service unreachable from host by design.
