@@ -3,5 +3,11 @@
 <body>
   <h1>Welcome to DarkVault Bank</h1>
   <p>Account dashboard placeholder -- modules will extend this.</p>
+  <ul>
+    <li><a href="{{ url_for('stored_xss_support_ticket.support_tickets') }}">Support Tickets</a></li>
+    {% if session.get('role') == 'admin' %}
+      <li><a href="{{ url_for('stored_xss_support_ticket.admin_support_queue') }}">Admin: Support Queue</a></li>
+    {% endif %}
+  </ul>
   <a href="{{ url_for('auth.logout') }}">Logout</a>
 </body></html>

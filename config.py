@@ -16,6 +16,15 @@ class Config:
         os.environ.get("REDIS_URL", "redis://redis:6379/0")
     )
 
+    # Intentional finding (CWE-1004: Sensitive Cookie Without HttpOnly
+    # Flag) -- kept as its own documented misconfiguration rather than
+    # a silent implementation detail, because it's what turns the
+    # stored_xss_support_ticket module from "can deface a page" into
+    # "can steal a live admin session." Real apps disable this by
+    # accident (legacy JS needing cookie access) more often than by
+    # deliberate design, which is why it's realistic to chain.
+    SESSION_COOKIE_HTTPONLY = False
+
     # Toggle which vuln modules load. Empty list = load everything in /modules.
     # Use this to ship curated packs: ["idor_beneficiary", "xss_stored_support"]
     # for a "beginner" build vs the full set for advanced.
