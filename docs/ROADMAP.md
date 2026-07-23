@@ -12,8 +12,14 @@ as their own commits/PRs, not folded into module-build commits.
 - [x] `idor_beneficiary` — Broken Access Control / IDOR
 - [x] `stored_xss_support_ticket` — Stored XSS chained with missing HttpOnly → session theft → admin takeover
 - [x] `jwt_alg_confusion` — Mobile API JWT verification trusts client-controlled alg header → forge admin token using the legitimately-public RSA key
+- [x] `sqli_transaction_search` — UNION-based SQLi in transaction search → extract users table password hashes (built and verified against real Postgres, not just SQLite)
 
 ## Planned
+- [ ] Flag submission/tracking system (core infra, not per-module) — a
+      `core.flags` table (module_name, hashed flag_value), a
+      `POST /submit-flag` endpoint, and a `/progress` page. Retrofit
+      into existing modules once built, since it's decoupled from any
+      single vuln.
 - [ ] Username enumeration / weak password reset → account takeover chain.
       Needs its own dedicated seed user with a realistic-but-discoverable
       username/password pattern — NOT the existing `attacker`/`victim`/`admin`

@@ -11,6 +11,7 @@ This is also what your "reset environment" admin action should call
 between training sessions -- drop-and-recreate keeps state honest.
 """
 from werkzeug.security import generate_password_hash
+from sqlalchemy import text
 
 from app import create_app, db
 from app.core.models import User
@@ -19,7 +20,21 @@ from app.core.models import User
 def main():
     app = create_app()
     with app.app_context():
-        db.drop_all()
+        # db.drop_all() orders drops by walking FK constraints in the
+        # current Python metadata -- as more modules with cross-table
+        # FKs get added over time (and the live schema accumulates
+        # constraints from earlier runs), this can fail with
+        # "DependentObjectsStillExist" on Postgres. Dropping and
+        # recreating the whole schema sidesteps ordering entirely and
+        # is safe here since this script's whole purpose is a clean
+        # reset, not a migration.
+        if db.engine.dialect.name == "postgresql":
+            db.session.execute(text("DROP SCHEMA public CASCADE"))
+            db.session.execute(text("CREATE SCHEMA public"))
+            db.session.commit()
+        else:
+            db.drop_all()
+
         db.create_all()
 
         db.session.add_all([
