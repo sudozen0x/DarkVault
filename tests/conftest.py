@@ -1,7 +1,8 @@
 import os
+import tempfile
 import pytest
 
-os.environ.setdefault("DATABASE_URL", "sqlite:////tmp/darkvault_test.db")
+os.environ.setdefault("DATABASE_URL", "sqlite:///" + os.path.join(tempfile.gettempdir(), "darkvault_test.db"))
 os.environ.setdefault("REDIS_URL", "redis://localhost:6379/1")
 
 

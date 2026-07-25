@@ -4,6 +4,4 @@ __pycache__/
 instance/
 *.db
 .venv/
-public_key.pem
-
-public_key.pem
+modules/file_upload_kyc/uploaded_documents/

