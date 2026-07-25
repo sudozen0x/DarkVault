@@ -75,10 +75,24 @@ def transfer():
     user.balance = current_balance - amount
     db.session.commit()
 
-    return jsonify({
+    response = {
         "message": f"Transferred {amount} to {beneficiary.name}",
         "new_balance": str(user.balance),
-    }), 200
+    }
+
+    # fund_transfer_flaws flag: proves the negative-amount business
+    # logic bug specifically (not just "you made a transfer").
+    if amount < 0:
+        response["flag"] = "DARKVAULT{m4th_is_h4rd_v4lid4tion_h4rder}"
+
+    # race_condition_double_spend flag: a correctly-enforced
+    # insufficient-funds check should make this mathematically
+    # impossible -- only the TOCTOU race (see module docs) can push
+    # balance negative.
+    if user.balance < 0:
+        response["race_condition_flag"] = "DARKVAULT{sp3nt_m0n3y_i_n3v3r_h4d}"
+
+    return jsonify(response), 200
 
 
 @bp.route("/account/balance")

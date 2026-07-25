@@ -77,4 +77,8 @@ def reset_password():
     user.is_locked = False
     user.failed_login_count = 0
     db.session.commit()
-    return jsonify({"message": "password updated"}), 200
+
+    response = {"message": "password updated"}
+    if user.username == "admin":
+        response["flag"] = "DARKVAULT{f0rg0t_my_p4ssw0rd_4nd_my_ethics}"
+    return jsonify(response), 200

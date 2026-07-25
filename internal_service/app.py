@@ -16,6 +16,7 @@ def admin_creds():
     return jsonify({
         "service": "core-banking-gateway",
         "admin_api_key": "sk_internal_7f2a9c1e4b",
+        "flag": "DARKVAULT{th3_s3rv3r_is_my_pr0xy_n0w}",
         "note": "internal use only - do not expose externally"
     })
 

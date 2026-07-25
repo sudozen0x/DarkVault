@@ -27,7 +27,7 @@ def app():
         ])
         db.session.add_all([
             Beneficiary(id=101, owner_id=1, name="J. Perera", account_number="8001223344", bank_name="Commercial Bank"),
-            Beneficiary(id=102, owner_id=2, name="A. Fernando", account_number="FLAG-ACCT-9911223", bank_name="Sampath Bank"),
+            Beneficiary(id=102, owner_id=2, name="A. Fernando", account_number="DARKVAULT{1d0r_by_4ny_0th3r_n4m3}", bank_name="Sampath Bank"),
         ])
         db.session.commit()
         yield application

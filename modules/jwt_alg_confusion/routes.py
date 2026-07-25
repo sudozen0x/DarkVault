@@ -90,4 +90,5 @@ def mobile_admin_overview():
         "total_customers": total_customers,
         "internal_note": "Q3 fraud review flagged 4 accounts for manual hold.",
         "system": "core-banking-gateway v2",
+        "flag": "DARKVAULT{rs256_hs256_sh0uld_n3v3r_m33t}",
     })

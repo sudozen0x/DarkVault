@@ -42,6 +42,8 @@ def update_profile():
 
     data = request.get_json(silent=True) or {}
 
+    was_admin_before = user.role == "admin"
+
     # VULNERABLE: iterates every submitted key and setattr()s it
     # directly, instead of only pulling from ALLOWED_DISPLAY_FIELDS.
     for key, value in data.items():
@@ -52,4 +54,7 @@ def update_profile():
     # Session role isn't refreshed automatically, but the DB is now
     # tampered -- next login (or a role check that re-reads from DB
     # instead of trusting the stale session value) reflects it.
-    return jsonify(user.to_public_dict())
+    result = user.to_public_dict()
+    if user.role == "admin" and not was_admin_before:
+        result["flag"] = "DARKVAULT{pr0m0ted_mys3lf_n0_hr_n33ded}"
+    return jsonify(result)

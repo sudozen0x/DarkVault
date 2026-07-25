@@ -23,6 +23,7 @@ class User(db.Model):
     # a free-text field than a strict enum.
     role = db.Column(db.String(20), nullable=False, default="customer")
     balance = db.Column(db.Numeric(12, 2), default=5000.00)
+    secret_note = db.Column(db.String(255), nullable=True)  # admin's has the sqli flag
 
     mfa_enabled = db.Column(db.Boolean, default=False)
     mfa_secret = db.Column(db.String(64), nullable=True)
@@ -42,3 +43,14 @@ class User(db.Model):
             "username": self.username,
             "role": self.role,
         }
+
+
+class SolvedFlag(db.Model):
+    __tablename__ = "solved_flags"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    module_name = db.Column(db.String(100), nullable=False)
+    solved_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    __table_args__ = (db.UniqueConstraint("user_id", "module_name", name="uq_user_module"),)

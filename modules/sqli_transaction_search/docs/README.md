@@ -41,9 +41,19 @@ once you test against the real target, not assumptions.
 4. Full payload (note the closing `)` before UNION — it closes the
    `LOWER(...)` call the search term sits inside):
    ```
-   nonexistent%') UNION SELECT id, username || ':' || password_hash, 0, NULL FROM users --
+   nonexistent%') UNION SELECT id, username || ':' || password_hash || ':' || COALESCE(secret_note, ''), 0, NULL FROM users --
    ```
    URL-encode appropriately when sending via browser/curl.
+
+## Flag location
+`admin`'s `secret_note` column, concatenated into the exfiltrated string
+above: `DARKVAULT{uni0n_s3l3ct_st4r_fr0m_secrets}`. Note the `COALESCE(...,
+'')` around `secret_note` in the payload — without it, SQL's NULL
+propagation through `||` would turn the *entire* concatenated string NULL
+for any row where `secret_note` is unset (i.e. every non-admin row),
+silently blanking out otherwise-successful rows. A real blind/UNION
+exfiltration attempt hits this constantly and it's worth recognizing, not
+just copy-pasting a payload that happens to work once.
 
 ## Hints
 - Hint 1: "The list endpoint and the search endpoint hit the same table. Do they behave the same way to unusual input?"

