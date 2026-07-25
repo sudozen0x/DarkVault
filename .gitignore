@@ -5,3 +5,6 @@ instance/
 *.db
 .venv/
 modules/file_upload_kyc/uploaded_documents/
+public_key.pem
+flask_session/
+test_output*.txt
