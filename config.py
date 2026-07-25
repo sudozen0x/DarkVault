@@ -1,4 +1,5 @@
 import os
+import tempfile
 import redis
 
 
@@ -25,6 +26,16 @@ class Config:
     # deliberate design, which is why it's realistic to chain.
     SESSION_COOKIE_HTTPONLY = False
 
+    # Intentional finding (CWE-352 support): SameSite=None means the
+    # session cookie is sent on cross-site requests, including a
+    # malicious page's auto-submitting form -- this is what makes
+    # fund_transfer_flaws' CSRF actually exploitable. Secure=True is
+    # required alongside None or browsers reject the cookie outright;
+    # it still works over plain http on localhost specifically, since
+    # browsers treat loopback addresses as a secure context.
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
+
     # Toggle which vuln modules load. Empty list = load everything in /modules.
     # Use this to ship curated packs: ["idor_beneficiary", "xss_stored_support"]
     # for a "beginner" build vs the full set for advanced.
@@ -47,5 +58,5 @@ class TestConfig(Config):
     TESTING = True
     SESSION_TYPE = "filesystem"
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", "sqlite:////tmp/darkvault_test.db"
+        "DATABASE_URL", "sqlite:///" + os.path.join(tempfile.gettempdir(), "darkvault_test.db")
     )

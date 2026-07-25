@@ -22,6 +22,7 @@ class User(db.Model):
     # a mass-assignment / role-tampering bug more naturally against
     # a free-text field than a strict enum.
     role = db.Column(db.String(20), nullable=False, default="customer")
+    balance = db.Column(db.Numeric(12, 2), default=5000.00)
 
     mfa_enabled = db.Column(db.Boolean, default=False)
     mfa_secret = db.Column(db.String(64), nullable=True)

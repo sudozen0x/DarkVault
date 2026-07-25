@@ -70,7 +70,16 @@ def _load_vuln_modules(app):
         if not routes_file.exists():
             continue
 
-        spec = importlib.import_module(f"modules.{name}.routes")
+        try:
+            spec = importlib.import_module(f"modules.{name}.routes")
+        except ImportError as e:
+            # A single module's missing dependency (e.g. lxml not
+            # installed locally on a dev machine, even though it IS
+            # installed in the Docker image via requirements.txt)
+            # shouldn't take down the whole app -- skip that module
+            # and keep loading the rest.
+            app.logger.warning(f"[module] skipped {name}: {e}")
+            continue
         if hasattr(spec, "bp"):
             app.register_blueprint(spec.bp)
             app.logger.info(f"[module] loaded: {name}")
