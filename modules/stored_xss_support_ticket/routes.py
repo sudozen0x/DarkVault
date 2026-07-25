@@ -92,4 +92,14 @@ def register_reset():
     from app import db as _db
     SupportTicket.query.delete()
     CollectedSession.query.delete()
+    # Seeded "internal" ticket -- realistic in-context flag placement.
+    # Only visible via GET /admin/support, which requires either a
+    # real admin login or a hijacked admin session (the actual exploit
+    # path this module teaches).
+    _db.session.add(SupportTicket(
+        customer_id=3, subject="[Internal] Session monitoring note",
+        message="Reminder: rotate the support queue's XSS-prone rendering path. "
+                "Flag for verification: DARKVAULT{s4f3_filter_0n_0n3_p4g3_0nly}",
+        status="internal",
+    ))
     _db.session.commit()

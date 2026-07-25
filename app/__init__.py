@@ -31,9 +31,11 @@ def create_app(config_object="config.Config"):
     # --- core blueprints (always loaded, other modules depend on these) ---
     from app.core.auth import auth_bp
     from app.core.dashboard import dashboard_bp
+    from app.core.flags import flags_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(flags_bp)
 
     # Landing page: real bank sites redirect an unauthenticated root
     # hit straight to login rather than serving a marketing page here.

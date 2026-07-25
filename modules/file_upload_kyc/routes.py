@@ -54,7 +54,16 @@ def upload_kyc_document():
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     file.save(save_path)
 
-    return jsonify({"message": "Document uploaded for review", "filename": filename}), 200
+    response = {"message": "Document uploaded for review", "filename": filename}
+    # Flag proves the missing type allowlist specifically -- awarded
+    # when a file type that shouldn't be accepted for KYC (anything
+    # not an image) gets through anyway.
+    ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".pdf"}
+    _, ext = os.path.splitext(filename.lower())
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        response["flag"] = "DARKVAULT{.html_is_a_v4lid_id_document_4pp4rently}"
+
+    return jsonify(response), 200
 
 
 @bp.route("/kyc/documents/<path:filename>")
